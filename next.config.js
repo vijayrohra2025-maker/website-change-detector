@@ -1,5 +1,8 @@
 const nextConfig = {
-  devIndicators: false
+  devIndicators: false,
+  outputFileTracingIncludes: {
+    "/api/sites/**": ["./node_modules/playwright-core/.local-browsers/**/*"]
+  }
 };
 
 export default nextConfig;
