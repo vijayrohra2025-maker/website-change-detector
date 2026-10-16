@@ -1,7 +1,7 @@
 const nextConfig = {
   devIndicators: false,
   outputFileTracingIncludes: {
-    "/api/sites/**": ["./node_modules/playwright-core/.local-browsers/**/*"]
+    "/api/sites/**": ["./node_modules/@sparticuz/chromium/bin/**/*"]
   }
 };
 
