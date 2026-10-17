@@ -11,7 +11,7 @@ export async function POST(_request, { params }) {
   if (!site) return Response.json({ error: "Website not found." }, { status: 404 });
   try {
     const text = await checkWebsite(site.url);
-    const result = compareText(site.text || "", text, site.baselineSaved && site.textMode === "browser");
+    const result = compareText(site.text || "", text, site.baselineSaved && site.textMode === "browser", site.url);
     const { changed, added, removed, message } = result;
     await saveCheck(id, { text, textMode: "browser", changed, added, removed, message, status: "ok", time: new Date().toISOString() });
     return Response.json({ message });
