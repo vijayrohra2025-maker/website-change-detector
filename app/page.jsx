@@ -55,11 +55,21 @@ export default function Home() {
       {!sites.length ? <p className="empty">No websites yet. Add a public URL above to get started.</p> : <div className="cards">{sites.map(site => <article className="card" key={site.id}>
         <div className="card-top"><div><h3>{site.url}</h3><p>Last checked: {site.lastChecked ? new Date(site.lastChecked).toLocaleString() : "Never"}</p></div><span className={`status ${site.status}`}>{site.status || "new"}</span></div>
         <p className="result">{site.lastMessage || "No checks yet."}</p>
-        {site.diff && <div className="diff"><p className="added">+ Added: {site.diff.added.join(" · ") || "Nothing"}</p><p className="removed">− Removed: {site.diff.removed.join(" · ") || "Nothing"}</p></div>}
+        {site.diff && <div className="diff"><p className="added">+ Added: {formatDiff(site.diff.added, site.url) || "Nothing"}</p><p className="removed">− Removed: {formatDiff(site.diff.removed, site.url) || "Nothing"}</p></div>}
         <details><summary>Check history ({site.history.length})</summary><ol>{site.history.map((item, i) => <li key={i}>{new Date(item.time).toLocaleString()} — {item.message}</li>)}</ol></details>
         <div className="actions"><button onClick={() => checkSite(site.id)} disabled={busy === site.id}>{busy === site.id ? "Checking…" : "Check now"}</button><button className="delete" onClick={() => deleteSite(site.id)}>Delete</button></div>
       </article>)}</div>}
     </section>
     <footer>Checks run the page briefly and compare its visible text. Some sites may block automated checks.</footer>
   </main>;
+}
+
+function formatDiff(values, url) {
+  if (!url.includes("clocktab.com")) return values.join(" · ");
+  return values.map(value => {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? value : date.toLocaleTimeString([], {
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
+    });
+  }).join(" · ");
 }
