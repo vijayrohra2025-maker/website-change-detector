@@ -55,7 +55,7 @@ export default function Home() {
       {!sites.length ? <p className="empty">No websites yet. Add a public URL above to get started.</p> : <div className="cards">{sites.map(site => <article className="card" key={site.id}>
         <div className="card-top"><div><h3>{site.url}</h3><p>Last checked: {site.lastChecked ? new Date(site.lastChecked).toLocaleString() : "Never"}</p></div><span className={`status ${site.status}`}>{site.status || "new"}</span></div>
         <p className="result">{site.lastMessage || "No checks yet."}</p>
-        {site.diff && <div className="diff">{isClockSite(site.url) && site.diff.added.length && site.diff.removed.length ? <p><strong>Time changed:</strong> {site.diff.removed[0]} <span aria-hidden="true">→</span> {site.diff.added[0]}</p> : <><p className="added">+ Added: {site.diff.added.join(" · ") || "Nothing"}</p><p className="removed">− Removed: {site.diff.removed.join(" · ") || "Nothing"}</p></>}</div>}
+        {site.diff && <div className="diff"><p className="added">+ Added: {site.diff.added.join(" · ") || "Nothing"}</p><p className="removed">− Removed: {site.diff.removed.join(" · ") || "Nothing"}</p></div>}
         <details><summary>Check history ({site.history.length})</summary><ol>{site.history.map((item, i) => <li key={i}>{new Date(item.time).toLocaleString()} — {item.message}</li>)}</ol></details>
         <div className="actions"><button onClick={() => checkSite(site.id)} disabled={busy === site.id}>{busy === site.id ? "Checking…" : "Check now"}</button><button className="delete" onClick={() => deleteSite(site.id)}>Delete</button></div>
       </article>)}</div>}
@@ -64,7 +64,3 @@ export default function Home() {
   </main>;
 }
 
-function isClockSite(url) {
-  try { return /(^|\.)(clocktab\.com|digitalclock\.live)$/.test(new URL(url).hostname); }
-  catch { return false; }
-}

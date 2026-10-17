@@ -12,9 +12,7 @@ export async function POST(_request, { params }) {
   try {
     const text = await checkWebsite(site.url);
     const time = new Date().toISOString();
-    const { changed, added, removed, message } = compareText(
-      site.text || "", text, site.baselineSaved && site.textMode === "browser", site.url
-    );
+    const { changed, added, removed, message } = compareText(site.text || "", text, site.baselineSaved && site.textMode === "browser");
     await saveCheck(id, { text, textMode: "browser", changed, added, removed, message, status: "ok", time });
     return Response.json({ message });
   } catch (error) {
